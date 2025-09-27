@@ -8,8 +8,15 @@ export default function App() {
 
   // Desactivar theme-b al inicio
   useEffect(() => {
-    const themeA = document.getElementById('theme-a-css') as HTMLLinkElement;
-    const themeB = document.getElementById('theme-b-css') as HTMLLinkElement;
+    const allLinks = document.querySelectorAll('link[rel="stylesheet"]');
+    const themeA = Array.from(allLinks).find(link => 
+      link.getAttribute('href')?.includes('theme-a') ||
+      link.getAttribute('data-href')?.includes('theme-a')
+    ) as HTMLLinkElement;
+    const themeB = Array.from(allLinks).find(link => 
+      link.getAttribute('href')?.includes('theme-b') ||
+      link.getAttribute('data-href')?.includes('theme-b')
+    ) as HTMLLinkElement;
     
     console.log('🔧 INIT - Entorno:', import.meta.env.DEV ? 'DESARROLLO' : 'PRODUCCIÓN');
     console.log('🔧 INIT - Base URL:', window.location.origin + window.location.pathname);
@@ -51,8 +58,15 @@ export default function App() {
   }, [isDark]);
 
   const handleThemeChange = (theme: "theme-a" | "theme-b") => {
-    const themeA = document.getElementById('theme-a-css') as HTMLLinkElement;
-    const themeB = document.getElementById('theme-b-css') as HTMLLinkElement;
+    const allLinks = document.querySelectorAll('link[rel="stylesheet"]');
+    const themeA = Array.from(allLinks).find(link => 
+      link.getAttribute('href')?.includes('theme-a') || 
+      link.getAttribute('data-href')?.includes('theme-a')
+    ) as HTMLLinkElement;
+    const themeB = Array.from(allLinks).find(link => 
+      link.getAttribute('href')?.includes('theme-b') || 
+      link.getAttribute('data-href')?.includes('theme-b')
+    ) as HTMLLinkElement;
     
     console.log(`🎨 CAMBIO A: ${theme}`);
     console.log('🎨 ANTES - Theme A:', {href: themeA?.href, dataHref: themeA?.dataset.href, disabled: themeA?.disabled});
