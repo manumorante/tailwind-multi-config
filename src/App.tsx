@@ -6,10 +6,13 @@ export default function App() {
   const [activeTheme, setActiveTheme] = useState<"theme-a" | "theme-b">("theme-a");
   const [isDark, setIsDark] = useState<boolean>(false);
 
-  // Activar theme-a por defecto
+  // Desactivar theme-b al inicio
   useEffect(() => {
     const themeB = document.getElementById('theme-b-css') as HTMLLinkElement;
-    if (themeB) themeB.disabled = true;
+    if (themeB && themeB.href) {
+      themeB.dataset.href = themeB.href;
+      themeB.removeAttribute('href');
+    }
   }, []);
 
   // Manejar cambio de modo oscuro
@@ -25,9 +28,29 @@ export default function App() {
     const themeA = document.getElementById('theme-a-css') as HTMLLinkElement;
     const themeB = document.getElementById('theme-b-css') as HTMLLinkElement;
     
-    const isThemeA = theme === 'theme-a';
-    if (themeA) themeA.disabled = !isThemeA;
-    if (themeB) themeB.disabled = isThemeA;
+    if (theme === 'theme-a') {
+      // Activar theme-a
+      if (themeA && themeA.dataset.href) {
+        themeA.href = themeA.dataset.href;
+        themeA.removeAttribute('data-href');
+      }
+      // Desactivar theme-b
+      if (themeB && themeB.href) {
+        themeB.dataset.href = themeB.href;
+        themeB.removeAttribute('href');
+      }
+    } else {
+      // Desactivar theme-a
+      if (themeA && themeA.href) {
+        themeA.dataset.href = themeA.href;
+        themeA.removeAttribute('href');
+      }
+      // Activar theme-b
+      if (themeB && themeB.dataset.href) {
+        themeB.href = themeB.dataset.href;
+        themeB.removeAttribute('data-href');
+      }
+    }
     
     setActiveTheme(theme);
   };
