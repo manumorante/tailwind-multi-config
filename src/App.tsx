@@ -8,11 +8,31 @@ export default function App() {
 
   // Desactivar theme-b al inicio
   useEffect(() => {
+    const themeA = document.getElementById('theme-a-css') as HTMLLinkElement;
     const themeB = document.getElementById('theme-b-css') as HTMLLinkElement;
+    
+    console.log('🔧 INIT - Entorno:', import.meta.env.DEV ? 'DESARROLLO' : 'PRODUCCIÓN');
+    console.log('🔧 INIT - Base URL:', window.location.origin + window.location.pathname);
+    console.log('🔧 INIT - Theme A encontrado:', !!themeA, 'href:', themeA?.href);
+    console.log('🔧 INIT - Theme B encontrado:', !!themeB, 'href:', themeB?.href);
+    
     if (themeB && themeB.href) {
-      themeB.dataset.href = themeB.href;
+      const originalHref = themeB.href;
+      themeB.dataset.href = originalHref;
       themeB.removeAttribute('href');
+      console.log('🔧 INIT - Theme B desactivado. Original:', originalHref, '→ data-href:', themeB.dataset.href);
+    } else {
+      console.log('❌ INIT - No se pudo desactivar Theme B');
     }
+    
+    // Verificar que los CSS se están cargando
+    setTimeout(() => {
+      const styles = document.querySelectorAll('link[rel="stylesheet"]');
+      console.log('🔧 INIT - Total CSS links encontrados:', styles.length);
+      styles.forEach((link, i) => {
+        console.log(`🔧 INIT - CSS ${i}:`, link.getAttribute('href'), link.getAttribute('id'));
+      });
+    }, 100);
   }, []);
 
   // Manejar cambio de modo oscuro
@@ -28,29 +48,50 @@ export default function App() {
     const themeA = document.getElementById('theme-a-css') as HTMLLinkElement;
     const themeB = document.getElementById('theme-b-css') as HTMLLinkElement;
     
+    console.log(`🎨 CAMBIO A: ${theme}`);
+    console.log('🎨 ANTES - Theme A:', {href: themeA?.href, dataHref: themeA?.dataset.href, disabled: themeA?.disabled});
+    console.log('🎨 ANTES - Theme B:', {href: themeB?.href, dataHref: themeB?.dataset.href, disabled: themeB?.disabled});
+    
     if (theme === 'theme-a') {
       // Activar theme-a
       if (themeA && themeA.dataset.href) {
         themeA.href = themeA.dataset.href;
         themeA.removeAttribute('data-href');
+        console.log('✅ Theme A activado:', themeA.href);
       }
       // Desactivar theme-b
       if (themeB && themeB.href) {
         themeB.dataset.href = themeB.href;
         themeB.removeAttribute('href');
+        console.log('❌ Theme B desactivado:', themeB.dataset.href);
       }
     } else {
       // Desactivar theme-a
       if (themeA && themeA.href) {
         themeA.dataset.href = themeA.href;
         themeA.removeAttribute('href');
+        console.log('❌ Theme A desactivado:', themeA.dataset.href);
       }
       // Activar theme-b
       if (themeB && themeB.dataset.href) {
         themeB.href = themeB.dataset.href;
         themeB.removeAttribute('data-href');
+        console.log('✅ Theme B activado:', themeB.href);
       }
     }
+    
+    // Verificar estado final
+    setTimeout(() => {
+      console.log('🎨 DESPUÉS - Theme A:', {href: themeA?.href, dataHref: themeA?.dataset.href, disabled: themeA?.disabled});
+      console.log('🎨 DESPUÉS - Theme B:', {href: themeB?.href, dataHref: themeB?.dataset.href, disabled: themeB?.disabled});
+      
+      // Verificar si los CSS están realmente cargándose
+      const activeLinks = document.querySelectorAll('link[rel="stylesheet"][href]');
+      console.log('🎨 DESPUÉS - Links CSS activos:', activeLinks.length);
+      activeLinks.forEach(link => {
+        console.log('🎨 DESPUÉS - CSS activo:', link.getAttribute('href'), link.getAttribute('id'));
+      });
+    }, 50);
     
     setActiveTheme(theme);
   };
