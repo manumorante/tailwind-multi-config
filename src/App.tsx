@@ -40,44 +40,52 @@ export default function App() {
         </h1>
 
         <div className="flex gap-3 mb-6 items-center">
-        <button
-          onClick={() => handleThemeChange("theme-a")}
-          className={`bg-neutral-50 dark:bg-neutral-900 dark:text-white text-neutral-900 px-3 py-2 rounded text-sm border border-neutral-500 ${
-            activeTheme === "theme-a"
-              ? "ring-2 ring-neutral-900 dark:ring-white"
-              : ""
-          }`}
-        >
-          Theme A
-        </button>
-        <button
-          onClick={() => handleThemeChange("theme-b")}
-          className={`bg-neutral-50 dark:bg-neutral-900 dark:text-white text-neutral-900 px-3 py-2 rounded text-sm border border-neutral-500 ${
-            activeTheme === "theme-b"
-              ? "ring-2 ring-neutral-900 dark:ring-white"
-              : ""
-          }`}
-        >
-          Theme B
-        </button>
+        <label>
+          <input
+            type="radio"
+            name="theme"
+            value="theme-a"
+            checked={activeTheme === "theme-a"}
+            onChange={() => handleThemeChange("theme-a")}
+            className="mr-1"
+          />
+          <span>Theme A</span>
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="theme"
+            value="theme-b"
+            checked={activeTheme === "theme-b"}
+            onChange={() => handleThemeChange("theme-b")}
+            className="mr-1"
+          />
+          <span>Theme B</span>
+        </label>
 
           <div className="ml-4 border-l border-neutral-500 dark:border-neutral-400 pl-4 flex gap-3">
-          <button
-            onClick={() => setIsDark(false)}
-            className={`bg-neutral-50 dark:bg-neutral-900 dark:text-white text-neutral-900 px-3 py-2 rounded text-sm border border-neutral-500 ${
-              !isDark ? "ring-2 ring-neutral-900 dark:ring-white" : ""
-            }`}
-          >
-            Light
-          </button>
-          <button
-            onClick={() => setIsDark(true)}
-            className={`bg-neutral-50 dark:bg-neutral-900 dark:text-white text-neutral-900 px-3 py-2 rounded text-sm border border-neutral-500 ${
-              isDark ? "ring-2 ring-neutral-900 dark:ring-white" : ""
-            }`}
-          >
-            Dark
-          </button>
+          <label>
+            <input
+              type="radio"
+              name="mode"
+              value="light"
+              checked={!isDark}
+              onChange={() => setIsDark(false)}
+              className="mr-1"
+            />
+            <span>Light</span>
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="mode"
+              value="dark"
+              checked={isDark}
+              onChange={() => setIsDark(true)}
+              className="mr-1"
+            />
+            <span>Dark</span>
+          </label>
           </div>
         </div>
 
