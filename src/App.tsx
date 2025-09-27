@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
-import ThemeA from "./ThemeA";
-import ThemeB from "./ThemeB";
 import themeAContent from "./theme-a.css?raw";
 import themeBContent from "./theme-b.css?raw";
 
 export default function App() {
   const [activeTheme, setActiveTheme] = useState<"theme-a" | "theme-b">("theme-a");
   const [isDark, setIsDark] = useState<boolean>(false);
+
+  // Activar theme-a por defecto
+  useEffect(() => {
+    const themeA = document.getElementById('theme-a-css') as HTMLLinkElement;
+    if (themeA) themeA.disabled = false;
+  }, []);
 
   // Manejar cambio de modo oscuro
   useEffect(() => {
@@ -18,15 +22,22 @@ export default function App() {
   }, [isDark]);
 
   const handleThemeChange = (theme: "theme-a" | "theme-b") => {
+    const themeA = document.getElementById('theme-a-css') as HTMLLinkElement;
+    const themeB = document.getElementById('theme-b-css') as HTMLLinkElement;
+    
+    if (theme === 'theme-a') {
+      if (themeA) themeA.disabled = false;
+      if (themeB) themeB.disabled = true;
+    } else {
+      if (themeA) themeA.disabled = true;
+      if (themeB) themeB.disabled = false;
+    }
+    
     setActiveTheme(theme);
   };
 
   return (
-    <>
-      {activeTheme === "theme-a" && <ThemeA />}
-      {activeTheme === "theme-b" && <ThemeB />}
-      
-      <div className="min-h-screen bg-primary-50 dark:bg-primary-950 transition-colors">
+    <div className="min-h-screen bg-primary-50 dark:bg-primary-950 transition-colors">
         <div className="max-w-5xl mx-auto p-6">
         <h1 className="text-2xl mb-4 text-primary-900 dark:text-primary-100">
           Tailwind CSS v4 - Multiple themes
@@ -178,7 +189,6 @@ export default function App() {
           </div>
         </div>
         </div>
-      </div>
-    </>
+    </div>
   );
 }
