@@ -8,8 +8,8 @@ export default function App() {
 
   // Activar theme-a por defecto
   useEffect(() => {
-    const themeA = document.getElementById('theme-a-css') as HTMLLinkElement;
-    if (themeA) themeA.disabled = false;
+    const themeB = document.getElementById('theme-b-css') as HTMLLinkElement;
+    if (themeB) themeB.disabled = true;
   }, []);
 
   // Manejar cambio de modo oscuro
@@ -25,13 +25,9 @@ export default function App() {
     const themeA = document.getElementById('theme-a-css') as HTMLLinkElement;
     const themeB = document.getElementById('theme-b-css') as HTMLLinkElement;
     
-    if (theme === 'theme-a') {
-      if (themeA) themeA.disabled = false;
-      if (themeB) themeB.disabled = true;
-    } else {
-      if (themeA) themeA.disabled = true;
-      if (themeB) themeB.disabled = false;
-    }
+    const isThemeA = theme === 'theme-a';
+    if (themeA) themeA.disabled = !isThemeA;
+    if (themeB) themeB.disabled = isThemeA;
     
     setActiveTheme(theme);
   };
