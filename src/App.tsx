@@ -1,34 +1,12 @@
 import { useState, useEffect } from "react";
+import ThemeA from "./ThemeA";
+import ThemeB from "./ThemeB";
 import themeAContent from "./theme-a.css?raw";
 import themeBContent from "./theme-b.css?raw";
 
-function loadTheme(theme: string) {
-  const link = document.createElement("link");
-  link.rel = "stylesheet";
-  
-  if (import.meta.env.DEV) {
-    // En desarrollo, usar la ruta directa
-    link.href = `/src/${theme}.css`;
-  } else {
-    // En producción, usar las rutas con hash (necesitamos importar los assets)
-    if (theme === 'theme-a') {
-      link.href = new URL('./theme-a.css', import.meta.url).href;
-    } else if (theme === 'theme-b') {
-      link.href = new URL('./theme-b.css', import.meta.url).href;
-    }
-  }
-  
-  document.head.appendChild(link);
-}
-
 export default function App() {
-  const [activeTheme, setActiveTheme] = useState<string>("theme-a");
+  const [activeTheme, setActiveTheme] = useState<"theme-a" | "theme-b">("theme-a");
   const [isDark, setIsDark] = useState<boolean>(false);
-
-  // Cargar theme-a por defecto al inicio
-  useEffect(() => {
-    loadTheme("theme-a");
-  }, []);
 
   // Manejar cambio de modo oscuro
   useEffect(() => {
@@ -39,14 +17,17 @@ export default function App() {
     }
   }, [isDark]);
 
-  const handleThemeChange = (theme: string) => {
-    loadTheme(theme);
+  const handleThemeChange = (theme: "theme-a" | "theme-b") => {
     setActiveTheme(theme);
   };
 
   return (
-    <div className="min-h-screen bg-primary-50 dark:bg-primary-950 transition-colors">
-      <div className="max-w-5xl mx-auto p-6">
+    <>
+      {activeTheme === "theme-a" && <ThemeA />}
+      {activeTheme === "theme-b" && <ThemeB />}
+      
+      <div className="min-h-screen bg-primary-50 dark:bg-primary-950 transition-colors">
+        <div className="max-w-5xl mx-auto p-6">
         <h1 className="text-2xl mb-4 text-primary-900 dark:text-primary-100">
           Tailwind CSS v4 - Multiple themes
         </h1>
@@ -196,7 +177,8 @@ export default function App() {
             </div>
           </div>
         </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
