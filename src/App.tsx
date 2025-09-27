@@ -16,13 +16,19 @@ export default function App() {
     console.log('🔧 INIT - Theme A encontrado:', !!themeA, 'href:', themeA?.href);
     console.log('🔧 INIT - Theme B encontrado:', !!themeB, 'href:', themeB?.href);
     
-    if (themeB && themeB.href) {
-      const originalHref = themeB.href;
-      themeB.dataset.href = originalHref;
-      themeB.removeAttribute('href');
-      console.log('🔧 INIT - Theme B desactivado. Original:', originalHref, '→ data-href:', themeB.dataset.href);
+    if (themeB && (themeB.href || themeB.dataset.href)) {
+      if (themeB.href) {
+        // Primera vez: mover href a data-href
+        const originalHref = themeB.href;
+        themeB.dataset.href = originalHref;
+        themeB.removeAttribute('href');
+        console.log('🔧 INIT - Theme B desactivado. Original:', originalHref, '→ data-href:', themeB.dataset.href);
+      } else {
+        // Ya estaba desactivado
+        console.log('🔧 INIT - Theme B ya estaba desactivado, data-href:', themeB.dataset.href);
+      }
     } else {
-      console.log('❌ INIT - No se pudo desactivar Theme B');
+      console.log('❌ INIT - No se pudo desactivar Theme B - sin href ni data-href');
     }
     
     // Verificar que los CSS se están cargando
