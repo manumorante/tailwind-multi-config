@@ -90,7 +90,7 @@ export default function App() {
         inactiveLink.removeAttribute('href');
         console.log(`❌ ${inactiveName} desactivado:`, inactiveLink.dataset.href);
       }
-    }, 10);
+    }, 100);
     
     // Verificar estado final
     setTimeout(() => {
