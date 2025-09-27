@@ -2,10 +2,34 @@ import { useState, useEffect } from "react";
 import themeAContent from "./theme-a.css?raw";
 import themeBContent from "./theme-b.css?raw";
 
-function loadTheme(theme: string) {
+async function loadTheme(theme: string) {
+  // Remover links anteriores
+  const existingLinks = document.querySelectorAll('link[data-theme]');
+  existingLinks.forEach(link => link.remove());
+  
+  // Crear nuevo link
   const link = document.createElement("link");
   link.rel = "stylesheet";
-  link.href = `/src/${theme}.css`;
+  link.setAttribute('data-theme', theme);
+  
+  // En desarrollo, usar la ruta del archivo
+  if (import.meta.env.DEV) {
+    link.href = `/src/${theme}.css`;
+  } else {
+    // En producción, usar el contenido embebido
+    const style = document.createElement("style");
+    style.setAttribute('data-theme', theme);
+    
+    if (theme === 'theme-a') {
+      style.textContent = themeAContent;
+    } else if (theme === 'theme-b') {
+      style.textContent = themeBContent;
+    }
+    
+    document.head.appendChild(style);
+    return;
+  }
+  
   document.head.appendChild(link);
 }
 
