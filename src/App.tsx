@@ -2,32 +2,20 @@ import { useState, useEffect } from "react";
 import themeAContent from "./theme-a.css?raw";
 import themeBContent from "./theme-b.css?raw";
 
-async function loadTheme(theme: string) {
-  // Remover links anteriores
-  const existingLinks = document.querySelectorAll('link[data-theme]');
-  existingLinks.forEach(link => link.remove());
-  
-  // Crear nuevo link
+function loadTheme(theme: string) {
   const link = document.createElement("link");
   link.rel = "stylesheet";
-  link.setAttribute('data-theme', theme);
   
-  // En desarrollo, usar la ruta del archivo
   if (import.meta.env.DEV) {
+    // En desarrollo, usar la ruta directa
     link.href = `/src/${theme}.css`;
   } else {
-    // En producción, usar el contenido embebido
-    const style = document.createElement("style");
-    style.setAttribute('data-theme', theme);
-    
+    // En producción, usar las rutas con hash (necesitamos importar los assets)
     if (theme === 'theme-a') {
-      style.textContent = themeAContent;
+      link.href = new URL('./theme-a.css', import.meta.url).href;
     } else if (theme === 'theme-b') {
-      style.textContent = themeBContent;
+      link.href = new URL('./theme-b.css', import.meta.url).href;
     }
-    
-    document.head.appendChild(style);
-    return;
   }
   
   document.head.appendChild(link);
