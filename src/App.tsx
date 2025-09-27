@@ -72,33 +72,25 @@ export default function App() {
     console.log('🎨 ANTES - Theme A:', {href: themeA?.href, dataHref: themeA?.dataset.href, disabled: themeA?.disabled});
     console.log('🎨 ANTES - Theme B:', {href: themeB?.href, dataHref: themeB?.dataset.href, disabled: themeB?.disabled});
     
-    if (theme === 'theme-a') {
-      // Activar theme-a
-      if (themeA && themeA.dataset.href) {
-        themeA.href = themeA.dataset.href;
-        themeA.removeAttribute('data-href');
-        console.log('✅ Theme A activado:', themeA.href);
-      }
-      // Desactivar theme-b
-      if (themeB && themeB.href) {
-        themeB.dataset.href = themeB.href;
-        themeB.removeAttribute('href');
-        console.log('❌ Theme B desactivado:', themeB.dataset.href);
-      }
-    } else {
-      // Desactivar theme-a
-      if (themeA && themeA.href) {
-        themeA.dataset.href = themeA.href;
-        themeA.removeAttribute('href');
-        console.log('❌ Theme A desactivado:', themeA.dataset.href);
-      }
-      // Activar theme-b
-      if (themeB && themeB.dataset.href) {
-        themeB.href = themeB.dataset.href;
-        themeB.removeAttribute('data-href');
-        console.log('✅ Theme B activado:', themeB.href);
-      }
+    const [activeLink, inactiveLink, activeName, inactiveName] = theme === 'theme-a' 
+      ? [themeA, themeB, 'Theme A', 'Theme B']
+      : [themeB, themeA, 'Theme B', 'Theme A'];
+
+    // 1. Primero activar nuevo tema (evitar blink)
+    if (activeLink?.dataset.href) {
+      activeLink.href = activeLink.dataset.href;
+      activeLink.removeAttribute('data-href');
+      console.log(`✅ ${activeName} activado:`, activeLink.href);
     }
+
+    // 2. Esperar un poco y después desactivar tema anterior
+    setTimeout(() => {
+      if (inactiveLink?.href) {
+        inactiveLink.dataset.href = inactiveLink.href;
+        inactiveLink.removeAttribute('href');
+        console.log(`❌ ${inactiveName} desactivado:`, inactiveLink.dataset.href);
+      }
+    }, 10);
     
     // Verificar estado final
     setTimeout(() => {
