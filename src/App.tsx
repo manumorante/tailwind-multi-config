@@ -115,53 +115,59 @@ export default function App() {
           Tailwind CSS v4 - Multiple themes
         </h1>
 
-        <div className="flex gap-3 mb-6 items-center">
-        <label>
-          <input
-            type="radio"
-            name="theme"
-            value="theme-a"
-            checked={activeTheme === "theme-a"}
-            onChange={() => handleThemeChange("theme-a")}
-            className="mr-1"
-          />
-          <span>Theme A</span>
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="theme"
-            value="theme-b"
-            checked={activeTheme === "theme-b"}
-            onChange={() => handleThemeChange("theme-b")}
-            className="mr-1"
-          />
-          <span>Theme B</span>
-        </label>
+        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+          {/* Fila 1: Selección de Tema */}
+          <div className="flex gap-3">
+            <label className="cursor-pointer">
+              <input
+                type="radio"
+                name="theme"
+                value="theme-a"
+                checked={activeTheme === "theme-a"}
+                onChange={() => handleThemeChange("theme-a")}
+                className="mr-1"
+              />
+              <span>Theme A</span>
+            </label>
+            
+            <label className="cursor-pointer">
+              <input
+                type="radio"
+                name="theme"
+                value="theme-b"
+                checked={activeTheme === "theme-b"}
+                onChange={() => handleThemeChange("theme-b")}
+                className="mr-1"
+              />
+              <span>Theme B</span>
+            </label>
+          </div>
 
-          <div className="ml-4 border-l border-neutral-500 dark:border-neutral-400 pl-4 flex gap-3">
-          <label>
-            <input
-              type="radio"
-              name="mode"
-              value="light"
-              checked={!isDark}
-              onChange={() => setIsDark(false)}
-              className="mr-1"
-            />
-            <span>Light</span>
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="mode"
-              value="dark"
-              checked={isDark}
-              onChange={() => setIsDark(true)}
-              className="mr-1"
-            />
-            <span>Dark</span>
-          </label>
+          {/* Fila 2: Selección de Modo */}
+          <div className="flex gap-3">
+            <label className="cursor-pointer">
+              <input
+                type="radio"
+                name="mode"
+                value="light"
+                checked={!isDark}
+                onChange={() => setIsDark(false)}
+                className="mr-1"
+              />
+              <span>Light</span>
+            </label>
+            
+            <label className="cursor-pointer">
+              <input
+                type="radio"
+                name="mode"
+                value="dark"
+                checked={isDark}
+                onChange={() => setIsDark(true)}
+                className="mr-1"
+              />
+              <span>Dark</span>
+            </label>
           </div>
         </div>
 
